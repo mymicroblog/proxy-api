@@ -2,6 +2,7 @@ addEventListener('fetch', event => {
   event.respondWith(handleRequest(event.request))
 })
 
+
 async function handleRequest(request) {
   try {
     // 构建目标 URL，将请求转发到 api.soulchill.live
