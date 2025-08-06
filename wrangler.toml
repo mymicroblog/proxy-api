@@ -4,3 +4,10 @@ main = "index.js"              # 入口文件（可选）
 
 compatibility_date = "2025-08-06"  # Cloudflare 要求的版本兼容日期
 
+[observability.logs]
+enabled = true
+
+
+
+
+
