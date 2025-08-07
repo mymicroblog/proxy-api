@@ -9,7 +9,7 @@ export default {
       }
 
       // 目标地址
-      const targetUrl = new URL("http://api.soulchill.live/api/app/hostAlternative");
+      const targetUrl = new URL("https://sc-api.doki.ren/api/app/hostAlternative");
 
       console.log("Incoming request:", {
         method: request.method,
