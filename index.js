@@ -25,9 +25,10 @@ async function handleRequest(request) {
   //   body: request.body,
   //   redirect: 'follow' // 可根据需要调整
   // });
-
+  console.error("请求:", forwardedRequest);
   // 发起子请求到目标后端
   const response = await fetch(forwardedRequest);
+  console.error("响应:", response);
 
   // 将后端响应的状态码、头部和内容原样返回
   return new Response(response.body, {
