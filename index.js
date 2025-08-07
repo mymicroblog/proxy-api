@@ -1,33 +1,30 @@
 export default {
   async fetch(request) {
-    // 替换成你要代理的目标地址（例如你实际要请求的 API）
-    const targetUrl = new URL(request.url);
-    targetUrl.hostname = "api.soulchill.live"; // 👈 你的目标域名
-    targetUrl.protocol = "https:";
+    // 构造目标 URL
+    const targetUrl = new URL("https://api.soulchill.live/api/app/hostAlternative");
 
-    // 克隆原始请求的 headers
+    // 克隆原始请求头
     const requestHeaders = new Headers(request.headers);
 
-    // 可选：删除 Host 头以避免目标服务器返回错误（如需要）
-    requestHeaders.delete("host");
+    // 强制设置正确 Host、User-Agent 等
+    requestHeaders.set("Host", "api.soulchill.live");
+    //requestHeaders.set("User-Agent", "Mozilla/5.0");
 
     // 构造转发请求
     const proxyRequest = new Request(targetUrl.toString(), {
       method: request.method,
       headers: requestHeaders,
       body: request.body,
-      redirect: "manual", // 保留原始重定向行为
+      redirect: "manual",
     });
 
-    // 发起请求
+    // 发起请求并返回
     const response = await fetch(proxyRequest);
 
     // 原样返回响应
-    const responseHeaders = new Headers(response.headers);
     return new Response(response.body, {
       status: response.status,
-      statusText: response.statusText,
-      headers: responseHeaders,
+      headers: response.headers,
     });
   },
 };
