@@ -9,7 +9,7 @@ export default {
       }
 
       // 目标地址
-      const targetUrl = new URL("https://api.soulchill.live/api/app/hostAlternative");
+      const targetUrl = new URL("http://api.soulchill.live/api/app/hostAlternative");
 
       console.log("Incoming request:", {
         method: request.method,
