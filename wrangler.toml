@@ -2,8 +2,9 @@ name = "sweet-math-b87f"       # Cloudflare Worker 名称
 type = "javascript"            # 项目类型: "javascript"、"webpack"、"module"
 main = "index.js"              # 入口文件（可选）
 
-compatibility_date = "2025-08-06"  # Cloudflare 要求的版本兼容日期
-
+compatibility_date = "2025-08-07"  # Cloudflare 要求的版本兼容日期
+workers_dev = true
+account_id = "ce3f7d1114b4a8afeb207adc09e1bae9"
 [observability.logs]
 enabled = true
 
