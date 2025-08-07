@@ -1,39 +1,33 @@
-addEventListener("fetch", event => {
-  event.respondWith(handleRequest(event.request));
-});
+export default {
+  async fetch(request) {
+    // 替换成你要代理的目标地址（例如你实际要请求的 API）
+    const targetUrl = new URL(request.url);
+    targetUrl.hostname = "api.soulchill.live"; // 👈 你的目标域名
+    targetUrl.protocol = "https:";
 
-async function handleRequest(request) {
-  const url = new URL(request.url);
+    // 克隆原始请求的 headers
+    const requestHeaders = new Headers(request.headers);
 
-  // 仅处理 /api/app/hostAlternative 路径，其它请求返回 404
-  if (url.pathname !== "/api/app/hostAlternative") {
-    return new Response("Not Found", { status: 404 });
-  }
+    // 可选：删除 Host 头以避免目标服务器返回错误（如需要）
+    requestHeaders.delete("host");
 
-  // 构造目标后端 API 的 URL，保留查询参数
-  const targetHost = "api.soulchill.live"; // 替换为实际后端主机域名
-  const targetUrl = `https://${targetHost}${url.pathname}${url.search}`;
+    // 构造转发请求
+    const proxyRequest = new Request(targetUrl.toString(), {
+      method: request.method,
+      headers: requestHeaders,
+      body: request.body,
+      redirect: "manual", // 保留原始重定向行为
+    });
 
-  // 转发请求：保留原请求的方法、头和体
-  // 方法一：直接使用原 Request 对象作为 init
-  const forwardedRequest = new Request(targetUrl, request);
+    // 发起请求
+    const response = await fetch(proxyRequest);
 
-  // 方法二：手动指定各属性（同样效果）
-  // const forwardedRequest = new Request(targetUrl, {
-  //   method: request.method,
-  //   headers: request.headers,
-  //   body: request.body,
-  //   redirect: 'follow' // 可根据需要调整
-  // });
-  console.error("请求:", forwardedRequest);
-  // 发起子请求到目标后端
-  const response = await fetch(forwardedRequest);
-  console.error("响应:", response);
-
-  // 将后端响应的状态码、头部和内容原样返回
-  return new Response(response.body, {
-    status: response.status,
-    statusText: response.statusText,
-    headers: response.headers
-  });
-}
+    // 原样返回响应
+    const responseHeaders = new Headers(response.headers);
+    return new Response(response.body, {
+      status: response.status,
+      statusText: response.statusText,
+      headers: responseHeaders,
+    });
+  },
+};
