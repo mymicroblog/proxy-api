@@ -20,9 +20,8 @@ export default {
       // 克隆原始请求头，不修改 user-agent
       const requestHeaders = new Headers(request.headers);
 
-      // 确保不设置或覆盖 Host，也可选择删除 Host 头（目标服务器可能会自动处理）
-       requestHeaders.set("Host", "sc-api.doki.ren"); // ❌ 现在不设置
-      //requestHeaders.delete("Host"); // ✅ 推荐删除，防止冲突
+       requestHeaders.set("Host", "sc-api.doki.ren"); 
+
 
       // 读取请求体（仅非 GET/HEAD）
       let body = null;
