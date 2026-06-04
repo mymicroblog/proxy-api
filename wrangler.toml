@@ -5,6 +5,39 @@ main = "index.js"              # 入口文件（可选）
 compatibility_date = "2025-08-07"  # Cloudflare 要求的版本兼容日期
 workers_dev = true
 account_id = "ce3f7d1114b4a8afeb207adc09e1bae9"
+
+[vars]
+# JSON array of route rules. Each route:
+#   prefix   - path prefix to match (required)
+#   origin   - upstream base URL (required)
+#   host     - Host header sent to upstream (default: parsed from origin)
+#   auth     - require API key? (default: true)
+#   rewrite  - array of [regex, replacement] for path rewriting
+#   set_request_headers  - headers to set/add on the upstream request
+#   remove_request_headers - headers to strip from the upstream request
+#   set_response_headers - headers to set/add on the client response
+#   remove_response_headers - headers to strip from the client response
+ROUTES = '''
+[
+  {
+    "prefix": "/api/",
+    "origin": "https://sc-api.doki.ren",
+    "host": "sc-api.doki.ren",
+    "rewrite": [],
+    "set_request_headers": {},
+    "remove_request_headers": [],
+    "set_response_headers": {},
+    "remove_response_headers": []
+  }
+]
+'''
+
+# Comma-separated API keys. Leave empty to disable auth.
+AUTH_KEYS = ""
+
+# Header name for the API key.
+AUTH_HEADER_NAME = "X-API-Key"
+
 [observability.logs]
 enabled = true
 
